@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FUN HUB FIXED</title>
+<style>
+body{margin:0;font-family:sans-serif;text-align:center;background:#111;color:white;}
+button{padding:10px;margin:5px;cursor:pointer;}
+.game{display:none;height:100vh;}
+.back{position:fixed;top:10px;left:10px;}
+</style>
+</head>
+
+<body>
+
+<h1 id="menu">🎮 FUN HUB</h1>
+
+<div id="buttons">
+
+<!-- BUTTONS -->
+<button onclick="start('clicker')">🎮 Klick Spiel</button>
+<button onclick="start('reaction')">⏱ Reaktion</button>
+<button onclick="start('dice')">🎲 Würfel</button>
+<button onclick="start('coin')">🪙 Münze</button>
+<button onclick="start('emoji')">😂 Emoji</button>
+<button onclick="start('color')">🎨 Farben</button>
+<button onclick="start('target')">🎯 Ziel</button>
+<button onclick="start('rng')">🎰 RNG</button>
+<button onclick="start('spam')">😂 Spam</button>
+<button onclick="start('race')">🏁 Race</button>
+
+<!-- NEUE -->
+<button onclick="start('aim')">🎯 Aim</button>
+<button onclick="start('guess')">🔢 Raten</button>
+<button onclick="start('memory')">🧠 Memory</button>
+<button onclick="start('fast')">⚡ Speed</button>
+<button onclick="start('luck')">🍀 Glück</button>
+<button onclick="start('mine')">💣 Mine</button>
+<button onclick="start('typing')">⌨️ Typing</button>
+<button onclick="start('math')">➕ Mathe</button>
+<button onclick="start('counter')">🔢 Counter</button>
+<button onclick="start('chaos')">🌀 Chaos</button>
+
+</div>
+
+<button class="back" onclick="back()" style="display:none;">⬅ Zurück</button>
+
+<!-- SPIELE -->
+
+<div id="clicker" class="game">
+<h1>Klick Spiel</h1>
+<p id="clicks">0</p>
+<button onclick="clickGame()">KLICK</button>
+</div>
+
+<div id="reaction" class="game">
+<h1>Reaktion</h1>
+<button onclick="reaction()">START</button>
+<p id="reactOut"></p>
+</div>
+
+<div id="dice" class="game">
+<h1>Würfel</h1>
+<button onclick="dice()">GO</button>
+<p id="diceOut"></p>
+</div>
+
+<div id="coin" class="game">
+<h1>Münze</h1>
+<button onclick="coin()">GO</button>
+<p id="coinOut"></p>
+</div>
+
+<div id="emoji" class="game">
+<h1>Emoji</h1>
+<button onclick="emoji()">Neu</button>
+<p id="emojiOut"></p>
+</div>
+
+<div id="color" class="game">
+<h1>Farben</h1>
+<button onclick="color()">Change</button>
+</div>
+
+<div id="target" class="game">
+<h1>Ziel</h1>
+<div id="targetBox" style="width:50px;height:50px;background:red;position:absolute;"></div>
+<p id="targetScore">0</p>
+</div>
+
+<div id="rng" class="game">
+<h1>RNG</h1>
+<button onclick="rng()">GO</button>
+<p id="rngOut"></p>
+</div>
+
+<div id="spam" class="game">
+<h1>Spam</h1>
+<button onclick="spawn()">+</button>
+<div id="spamArea"></div>
+</div>
+
+<div id="race" class="game">
+<h1>Race</h1>
+<button onclick="race()">+</button>
+<p id="raceOut">0</p>
+</div>
+
+<div id="aim" class="game">
+<h1>Aim</h1>
+<div id="aimBox" style="width:40px;height:40px;background:red;position:absolute;"></div>
+<p id="aimScore">0</p>
+</div>
+
+<div id="guess" class="game">
+<h1>Raten</h1>
+<input id="guessInput">
+<button onclick="guess()">OK</button>
+<p id="guessOut"></p>
+</div>
+
+<div id="memory" class="game">
+<h1>Memory</h1>
+<p id="memNum"></p>
+<button onclick="checkMem()">Antwort</button>
+</div>
+
+<div id="fast" class="game">
+<h1>Speed</h1>
+<button onclick="fast()">CLICK</button>
+<p id="fastOut">0</p>
+</div>
+
+<div id="luck" class="game">
+<h1>Glück</h1>
+<button onclick="luck()">TRY</button>
+<p id="luckOut"></p>
+</div>
+
+<div id="mine" class="game">
+<h1>Mine</h1>
+<button onclick="mine()">Klick</button>
+<p id="mineOut"></p>
+</div>
+
+<div id="typing" class="game">
+<h1>Typing</h1>
+<input id="typeInput">
+<p id="typeOut"></p>
+</div>
+
+<div id="math" class="game">
+<h1>Mathe</h1>
+<p id="mathQ"></p>
+<input id="mathA">
+<button onclick="checkMath()">OK</button>
+</div>
+
+<div id="counter" class="game">
+<h1>Counter</h1>
+<button onclick="count++ ; update()">+</button>
+<p id="countOut">0</p>
+</div>
+
+<div id="chaos" class="game">
+<h1>Chaos Button</h1>
+<button id="chaosBtn">Klick mich</button>
+</div>
+
+<script>
+
+// NAV
+let current=null;
+function start(id){
+menu.style.display="none";
+buttons.style.display="none";
+document.querySelector(".back").style.display="block";
+document.getElementById(id).style.display="block";
+current=id;
+if(id==="aim") moveAim();
+if(id==="target") moveTarget();
+}
+function back(){
+document.getElementById(current).style.display="none";
+menu.style.display="block";
+buttons.style.display="block";
+document.querySelector(".back").style.display="none";
+}
+
+// GAMES
+let c=0;
+function clickGame(){clicks.innerText=++c;}
+
+function reaction(){
+let t=Date.now();
+setTimeout(()=>reactOut.innerText=(Date.now()-t)+" ms",1000);
+}
+
+function dice(){diceOut.innerText=Math.floor(Math.random()*6)+1;}
+function coin(){coinOut.innerText=Math.random()<0.5?"Kopf":"Zahl";}
+function emoji(){emojiOut.innerText=["😂","😎","🔥"][Math.floor(Math.random()*3)];}
+
+function color(){document.body.style.background="#"+Math.floor(Math.random()*16777215).toString(16);}
+
+let ts=0;
+targetBox.onclick=()=>{targetScore.innerText=++ts;moveTarget();}
+function moveTarget(){
+targetBox.style.left=Math.random()*window.innerWidth+"px";
+targetBox.style.top=Math.random()*window.innerHeight+"px";
+}
+
+function rng(){rngOut.innerText=Math.random();}
+function spawn(){let b=document.createElement("button");b.innerText="😂";spamArea.appendChild(b);}
+let r=0;function race(){raceOut.innerText=++r;}
+
+let aScore=0;
+aimBox.onclick=()=>{aimScore.innerText=++aScore;moveAim();}
+function moveAim(){
+aimBox.style.left=Math.random()*window.innerWidth+"px";
+aimBox.style.top=Math.random()*window.innerHeight+"px";
+}
+
+let num=Math.floor(Math.random()*10);
+function guess(){guessOut.innerText=(guessInput.value==num)?"Richtig":"Falsch";}
+
+let mem=Math.floor(Math.random()*100);
+memNum.innerText=mem;
+setTimeout(()=>memNum.innerText="???",2000);
+function checkMem(){alert(mem);}
+
+let f=0;
+function fast(){fastOut.innerText=++f;}
+
+function luck(){luckOut.innerText=Math.random()<0.5?"WIN":"LOSE";}
+function mine(){mineOut.innerText=Math.random()<0.2?"💥":"Safe";}
+
+typeInput.oninput=()=>typeOut.innerText=typeInput.value.length;
+
+let a=Math.floor(Math.random()*10),b=Math.floor(Math.random()*10);
+mathQ.innerText=a+"+"+b;
+function checkMath(){alert(mathA.value==a+b?"Richtig":"Falsch");}
+
+let count=0;
+function update(){countOut.innerText=count;}
+
+chaosBtn.onmouseover=()=>{
+chaosBtn.style.position="absolute";
+chaosBtn.style.left=Math.random()*window.innerWidth+"px";
+chaosBtn.style.top=Math.random()*window.innerHeight+"px";
+}
+
+</script>
+
+</body>
+</html>
